@@ -55,6 +55,8 @@
   footer { margin-top: 2.5rem; font-size: 0.85rem; color: #9a8a76; text-align: center; }
   .subscribe { background: #fffdf8; border: 1px solid #e3d9c6; border-radius: 12px; padding: 1.25rem 1.5rem; margin: 2rem 0 1rem; }
   .subscribe h2 { margin-top: 0; }
+  .subscribe [hidden] { display: none !important; }
+  .subscribe-reset { background: none; border: none; padding: 0; font: inherit; color: #7a6a55; text-decoration: underline; cursor: pointer; }
   .subscribe-form { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
   .subscribe-form input[type="email"] { flex: 1 1 14rem; padding: 0.6rem 0.7rem; border: 1px solid #cfc2ab; border-radius: 8px; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; background: #fff; color: #2e2a26; }
   .subscribe-form button { padding: 0.6rem 1.4rem; background: #2e2a26; color: #faf6ef; border: none; border-radius: 999px; font-family: Helvetica, Arial, sans-serif; font-size: 0.95rem; letter-spacing: 0.04em; cursor: pointer; }
@@ -155,6 +157,7 @@
   <a class="shop" href="https://wolvenfiberco.com">Visit the Shop</a>
 
   <section class="subscribe">
+    <div class="subscribe-ask">
     <h2>Get new patterns in your inbox</h2>
     <p>Subscribe to the Wolven Fiber Co. newsletter — new free patterns and
     workbench notes, one email a week at most, and only when there's
@@ -164,6 +167,12 @@
       <input type="hidden" name="embed" value="1">
       <button type="submit">Subscribe</button>
     </form>
+    </div>
+    <div class="subscribe-done" hidden>
+      <h2>You're on the list</h2>
+      <p>Thanks for subscribing — new patterns and workbench notes will
+      land in your inbox. <button type="button" class="subscribe-reset">Not you? Show the subscribe form again</button></p>
+    </div>
   </section>
 
   <p class="social">Follow along: <a href="https://www.facebook.com/61595580444329"><img class="fb-icon" src="facebook-icon.svg" alt="">Wolven Fiber Co. on Facebook</a></p>
@@ -171,5 +180,25 @@
   <footer>© 2026 Wolven Fiber Co. · Lansing, Michigan<br>
   <span class="backlink"><a href="index.html">← Wolven Fiber Co. Blog home</a></span></footer>
 </main>
+
+<script>
+(function () {
+  var KEY = "wfc-subscribed";
+  function apply() {
+    var ask = document.querySelector(".subscribe-ask");
+    var done = document.querySelector(".subscribe-done");
+    if (!ask || !done) return;
+    var on = false;
+    try { on = !!localStorage.getItem(KEY); } catch (e) {}
+    ask.hidden = on;
+    done.hidden = !on;
+  }
+  var form = document.querySelector(".subscribe-form");
+  if (form) { form.addEventListener("submit", function () { try { localStorage.setItem(KEY, "1"); } catch (e) {} }); }
+  var reset = document.querySelector(".subscribe-reset");
+  if (reset) { reset.addEventListener("click", function () { try { localStorage.removeItem(KEY); } catch (e) {} apply(); }); }
+  apply();
+})();
+</script>
 </body>
 </html>
