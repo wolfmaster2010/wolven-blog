@@ -55,12 +55,17 @@
   .social a { color: #7a6a55; }
   .fb-icon { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
   footer { margin-top: 1.5rem; font-size: 0.85rem; color: #9a8a76; text-align: center; }
+
+  .masthead { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); margin-top: -2rem; margin-bottom: 1.25rem; }
+  .masthead img { width: 100%; display: block; }
+  html, body { overflow-x: clip; }
+  .topnav { position: sticky; top: 0; z-index: 5; background: rgba(250,246,239,0.92); backdrop-filter: blur(6px); padding: 0.55rem 0.5rem; border-bottom: 1px solid #e4dcc9; }
 </style>
 </head>
 <body>
 <main>
   <div class="brand">
-    <a href="index.html"><img class="logo" src="wolven-logo.png" alt="Wolven Fiber Co. logo"></a>
+    <header class="masthead"><img src="wolven-banner-header.jpg" alt="Wolven Fiber Co. — golden howling wolf banner"></header>
     <p class="tagline">From my den to your home</p>
   <nav class="topnav">
     <a href="index.html">Home</a>
