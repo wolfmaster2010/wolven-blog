@@ -53,7 +53,16 @@
 
   .backlink a { color: #7a6a55; }
   footer { margin-top: 2.5rem; font-size: 0.85rem; color: #9a8a76; text-align: center; }
+  .subscribe { background: #fffdf8; border: 1px solid #e3d9c6; border-radius: 12px; padding: 1.25rem 1.5rem; margin: 2rem 0 1rem; }
+  .subscribe h2 { margin-top: 0; }
+  .subscribe-form { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .subscribe-form input[type="email"] { flex: 1 1 14rem; padding: 0.6rem 0.7rem; border: 1px solid #cfc2ab; border-radius: 8px; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; background: #fff; color: #2e2a26; }
+  .subscribe-form button { padding: 0.6rem 1.4rem; background: #2e2a26; color: #faf6ef; border: none; border-radius: 999px; font-family: Helvetica, Arial, sans-serif; font-size: 0.95rem; letter-spacing: 0.04em; cursor: pointer; }
+  .subscribe-form button:hover { background: #4a4239; }
+  .social { text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 0.92rem; margin-top: 1.5rem; }
+  .social a { color: #7a6a55; }
 </style>
+<link rel="alternate" type="application/rss+xml" title="Wolven Fiber Co. — Blog" href="feed.xml">
 </head>
 <body>
 <main>
@@ -64,6 +73,7 @@
     <a href="index.html">Home</a>
     <a href="seed-stitch-washcloth.html">Seed Stitch Pattern</a>
     <a href="on-the-needles-grandmothers-favorite.html">On the Needles</a>
+    <a href="contact.html">Contact</a>
     <a href="https://wolvenfiberco.com">Shop</a>
   </nav>
   </div>
@@ -142,6 +152,20 @@
   including the loom-knitted baby beanies — lives in the Wolven Fiber Co.
   shop, and washcloth sets are on the way.</p>
   <a class="shop" href="https://wolvenfiberco.com">Visit the Shop</a>
+
+  <section class="subscribe">
+    <h2>Get new patterns in your inbox</h2>
+    <p>Subscribe to the Wolven Fiber Co. newsletter — new free patterns and
+    workbench notes, one email a week at most, and only when there's
+    something new to share. No spam, unsubscribe anytime.</p>
+    <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/wolvenfiberco" method="post">
+      <input type="email" name="email" required placeholder="you@example.com" aria-label="Email address">
+      <input type="hidden" name="embed" value="1">
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <p class="social">Follow along: <a href="https://www.facebook.com/61595580444329">Wolven Fiber Co. on Facebook</a></p>
 
   <footer>© 2026 Wolven Fiber Co. · Lansing, Michigan<br>
   <span class="backlink"><a href="index.html">← Wolven Fiber Co. Blog home</a></span></footer>

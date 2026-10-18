@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wolven Fiber Co. — Blog</title>
+    <link>https://blog.wolvenfiberco.com/</link>
+    <atom:link href="https://blog.wolvenfiberco.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Knitting patterns and notes from the workbench — handmade knitwear from Lansing, Michigan. From my den to your home.</description>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Oct 2026 16:00:00 -0400</lastBuildDate>
+    <item>
+      <title>On the Needles: Grandmother's Favorite Washcloths</title>
+      <link>https://blog.wolvenfiberco.com/on-the-needles-grandmothers-favorite.html</link>
+      <guid isPermaLink="true">https://blog.wolvenfiberco.com/on-the-needles-grandmothers-favorite.html</guid>
+      <pubDate>Sat, 18 Oct 2026 12:00:00 -0400</pubDate>
+      <description>A workbench update: washcloths are going on the needles next — a Grandmother's Favorite set of three in burgundy, white, and olive garden, with the classic pattern free to knit along.</description>
+    </item>
+    <item>
+      <title>Textured Seed Stitch Washcloth — Free Knitting Pattern</title>
+      <link>https://blog.wolvenfiberco.com/seed-stitch-washcloth.html</link>
+      <guid isPermaLink="true">https://blog.wolvenfiberco.com/seed-stitch-washcloth.html</guid>
+      <pubDate>Fri, 16 Oct 2026 12:00:00 -0400</pubDate>
+      <description>A free hand-knit washcloth pattern in seed stitch with a garter border. Sturdy, nubby, and lies flat — knit by hand on needles in worsted cotton.</description>
+    </item>
+  </channel>
+</rss>
