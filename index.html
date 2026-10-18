@@ -14,11 +14,11 @@
     color: #2e2a26;
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;
+    align-items: center; flex-direction: column;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: 2rem 0;
   }
-  main { text-align: center; max-width: 34rem; }
+  main { text-align: center; max-width: 34rem; padding: 0 1rem; }
   img.logo { width: 180px; height: 180px; border-radius: 50%; }
   h1 { font-size: 2rem; margin-top: 1.25rem; letter-spacing: 0.02em; }
   .tagline { font-style: italic; color: #7a6a55; margin-top: 0.35rem; }
@@ -66,16 +66,16 @@
   .social a { color: #7a6a55; }
   .fb-icon { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
 
-  .masthead { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); margin-top: -2rem; margin-bottom: 1.25rem; }
+  .masthead { width: 100%; margin-top: -2rem; margin-bottom: 1.25rem; }
   .masthead img { width: 100%; display: block; }
-  html, body { overflow-x: clip; }
   .topnav { position: sticky; top: 0; z-index: 5; background: rgba(250,246,239,0.92); backdrop-filter: blur(6px); padding: 0.55rem 0.5rem; border-bottom: 1px solid #e4dcc9; }
 </style>
 <link rel="alternate" type="application/rss+xml" title="Wolven Fiber Co. — Blog" href="feed.xml">
 </head>
 <body>
+<header class="masthead"><img src="wolven-banner-header.jpg" alt="Wolven Fiber Co. — golden howling wolf banner"></header>
 <main>
-  <header class="masthead"><img src="wolven-banner-header.jpg" alt="Wolven Fiber Co. — golden howling wolf banner"></header>
+
   <p class="tagline">From my den to your home</p>
   <nav class="topnav">
     <a href="index.html">Home</a>
