@@ -193,6 +193,7 @@
   <form class="comment-form">
     <label>Your name <input name="name" maxlength="60" required></label>
     <label>Your comment <textarea name="body" rows="4" maxlength="2000" required></textarea></label>
+    <label class="add-photo">Add photos <input type="file" name="photo" accept="image/jpeg,image/png,image/webp" multiple hidden></label> <span class="photo-chosen"></span>
     <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <input type="hidden" name="parent_id" value="">
     <p class="replying" hidden>Replying to <strong></strong> <button type="button" class="cancel-reply alt">Cancel</button></p>
@@ -201,13 +202,16 @@
   </form>
 </section>
 <style>
-  .comments { margin-top: 2.5rem; text-align: left; }
+  .comments { max-width: 38rem; margin: 2.5rem auto 0; padding: 0 1rem; text-align: left; }
   .comments-note { color: #7a6a55; font-size: 0.92rem; }
   .comment-list .comment { background: #fffdf8; border: 1px solid #e4dcc9; border-radius: 10px; padding: 0.8rem 1.1rem; margin: 0.8rem 0; }
   .comment-list .comment.reply { margin-left: 2rem; }
   .comment-list .meta { font-family: Helvetica, Arial, sans-serif; font-size: 0.78rem; color: #7a6a55; margin: 0 0 0.3rem; }
   .comment-list p { margin: 0.2rem 0; }
   .comment-list .badge { background: #b8860b; color: #fff; border-radius: 999px; padding: 0.05rem 0.55rem; font-size: 0.72rem; margin-left: 0.4rem; vertical-align: 2px; }
+  .comment-list .cphoto { display: block; max-width: 100%; height: auto; border-radius: 8px; margin-top: 0.5rem; }
+  .comment-form .add-photo { display: inline-block; border: 1px solid #2e2a26; border-radius: 999px; padding: 0.45rem 1.1rem; cursor: pointer; width: auto; }
+  .comment-form .photo-chosen { font-family: Helvetica, Arial, sans-serif; font-size: 0.85rem; color: #7a6a55; }
   .comment-list .reply-btn { font: inherit; font-size: 0.82rem; background: none; border: none; color: #7a6a55; cursor: pointer; padding: 0; text-decoration: underline; }
   .comment-form label { display: block; margin: 0.8rem 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.9rem; }
   .comment-form input[name="name"], .comment-form textarea { display: block; width: 100%; box-sizing: border-box; font: inherit; padding: 0.55rem 0.7rem; border: 1px solid #cfc4ab; border-radius: 8px; background: #fffdf8; margin-top: 0.3rem; }
@@ -238,6 +242,13 @@
       meta.appendChild(document.createTextNode(" · " + new Date(c.created_at.replace(" ", "T") + "Z").toLocaleDateString()));
       d.appendChild(meta);
       d.appendChild(el("p", null, c.body));
+      (c.image_keys || []).forEach(function (key) {
+        var ph = el("img", "cphoto");
+        ph.src = API + "/img/" + encodeURIComponent(key);
+        ph.alt = "Photo shared by " + c.name;
+        ph.loading = "lazy";
+        d.appendChild(ph);
+      });
       var b = el("button", "reply-btn", "Reply"); b.type = "button";
       b.onclick = function () {
         form.parent_id.value = c.id;
@@ -254,11 +265,21 @@
       .then(function (d) { render(d.comments || []); }).catch(function () {});
   }
   root.querySelector(".cancel-reply").onclick = function () { form.parent_id.value = ""; replying.hidden = true; };
+  form.photo.addEventListener("change", function () {
+    var n = form.photo.files ? form.photo.files.length : 0;
+    root.querySelector(".photo-chosen").textContent = n ? (n === 1 ? "1 photo chosen" : n + " photos chosen") : "";
+  });
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var payload = { page: PAGE, name: form.name.value, body: form.body.value, website: form.website.value };
-    if (form.parent_id.value) payload.parent_id = parseInt(form.parent_id.value, 10);
-    fetch(API + "/comments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+    if (form.photo.files && form.photo.files.length > 5) { status.textContent = "Up to 5 photos per comment, please."; return; }
+    var fd = new FormData();
+    fd.append("page", PAGE);
+    fd.append("name", form.name.value);
+    fd.append("body", form.body.value);
+    fd.append("website", form.website.value);
+    if (form.parent_id.value) fd.append("parent_id", form.parent_id.value);
+    if (form.photo.files) { for (var i = 0; i < form.photo.files.length; i++) fd.append("photo", form.photo.files[i]); }
+    fetch(API + "/comments", { method: "POST", body: fd })
       .then(function (r) { return r.json(); }).then(function () {
         status.textContent = "Thank you — your comment is waiting for approval and will appear once it has been read.";
         form.reset(); form.parent_id.value = ""; replying.hidden = true;
