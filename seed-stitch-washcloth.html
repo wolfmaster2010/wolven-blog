@@ -72,7 +72,7 @@
 </style>
 <link rel="alternate" type="application/rss+xml" title="Wolven Fiber Co. — Blog" href="feed.xml">
 </head>
-<body>
+<body data-comment-page="/seed-stitch-washcloth.html">
 <header class="masthead"><img src="wolven-banner-header.jpg" alt="Wolven Fiber Co. — golden howling wolf banner"></header>
 <nav class="topnav">
     <a href="index.html">Home</a>
@@ -208,5 +208,87 @@
   apply();
 })();
 </script>
+<section class="comments" id="comments">
+  <h2>Comments</h2>
+  <p class="comments-note">Comments are read and approved before they appear — thanks for your patience. No account needed.</p>
+  <div class="comment-list"></div>
+  <form class="comment-form">
+    <label>Your name <input name="name" maxlength="60" required></label>
+    <label>Your comment <textarea name="body" rows="4" maxlength="2000" required></textarea></label>
+    <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input type="hidden" name="parent_id" value="">
+    <p class="replying" hidden>Replying to <strong></strong> <button type="button" class="cancel-reply alt">Cancel</button></p>
+    <button type="submit">Send comment</button>
+    <p class="comment-status" role="status"></p>
+  </form>
+</section>
+<style>
+  .comments { margin-top: 2.5rem; text-align: left; }
+  .comments-note { color: #7a6a55; font-size: 0.92rem; }
+  .comment-list .comment { background: #fffdf8; border: 1px solid #e4dcc9; border-radius: 10px; padding: 0.8rem 1.1rem; margin: 0.8rem 0; }
+  .comment-list .comment.reply { margin-left: 2rem; }
+  .comment-list .meta { font-family: Helvetica, Arial, sans-serif; font-size: 0.78rem; color: #7a6a55; margin: 0 0 0.3rem; }
+  .comment-list p { margin: 0.2rem 0; }
+  .comment-list .badge { background: #b8860b; color: #fff; border-radius: 999px; padding: 0.05rem 0.55rem; font-size: 0.72rem; margin-left: 0.4rem; vertical-align: 2px; }
+  .comment-list .reply-btn { font: inherit; font-size: 0.82rem; background: none; border: none; color: #7a6a55; cursor: pointer; padding: 0; text-decoration: underline; }
+  .comment-form label { display: block; margin: 0.8rem 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+  .comment-form input[name="name"], .comment-form textarea { display: block; width: 100%; box-sizing: border-box; font: inherit; padding: 0.55rem 0.7rem; border: 1px solid #cfc4ab; border-radius: 8px; background: #fffdf8; margin-top: 0.3rem; }
+  .comment-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .comment-form button[type="submit"] { font: inherit; background: #2e2a26; color: #faf6ef; border: none; border-radius: 999px; padding: 0.6rem 1.4rem; cursor: pointer; }
+  .comment-form button.alt { background: none; border: none; color: #7a6a55; cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+  .comment-status { color: #7a6a55; font-size: 0.9rem; }
+</style>
+<script>
+(function () {
+  var root = document.getElementById("comments");
+  var API = "https://wolven-comments.red-smoke-72cb.workers.dev"; // set at deploy time
+  var PAGE = document.body.dataset.commentPage || location.pathname;
+  var list = root.querySelector(".comment-list");
+  var form = root.querySelector(".comment-form");
+  var status = root.querySelector(".comment-status");
+  var replying = root.querySelector(".replying");
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function render(comments) {
+    list.innerHTML = "";
+    if (!comments.length) { list.appendChild(el("p", "comments-note", "No comments yet — yours could be the first.")); return; }
+    var byId = {};
+    comments.forEach(function (c) { byId[c.id] = c; });
+    comments.forEach(function (c) {
+      var d = el("div", "comment" + (c.parent_id && byId[c.parent_id] ? " reply" : ""));
+      var meta = el("p", "meta", c.name);
+      if (c.owner === 1) { meta.appendChild(el("span", "badge", "Shop Owner")); }
+      meta.appendChild(document.createTextNode(" · " + new Date(c.created_at.replace(" ", "T") + "Z").toLocaleDateString()));
+      d.appendChild(meta);
+      d.appendChild(el("p", null, c.body));
+      var b = el("button", "reply-btn", "Reply"); b.type = "button";
+      b.onclick = function () {
+        form.parent_id.value = c.id;
+        replying.hidden = false;
+        replying.querySelector("strong").textContent = c.name;
+        form.body.focus();
+      };
+      d.appendChild(b);
+      list.appendChild(d);
+    });
+  }
+  function load() {
+    fetch(API + "/comments?page=" + encodeURIComponent(PAGE)).then(function (r) { return r.json(); })
+      .then(function (d) { render(d.comments || []); }).catch(function () {});
+  }
+  root.querySelector(".cancel-reply").onclick = function () { form.parent_id.value = ""; replying.hidden = true; };
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var payload = { page: PAGE, name: form.name.value, body: form.body.value, website: form.website.value };
+    if (form.parent_id.value) payload.parent_id = parseInt(form.parent_id.value, 10);
+    fetch(API + "/comments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+      .then(function (r) { return r.json(); }).then(function () {
+        status.textContent = "Thank you — your comment is waiting for approval and will appear once it has been read.";
+        form.reset(); form.parent_id.value = ""; replying.hidden = true;
+      }).catch(function () { status.textContent = "Something went wrong sending that — please try again in a bit."; });
+  });
+  load();
+})();
+</script>
+
 </body>
 </html>
